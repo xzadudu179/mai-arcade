@@ -122,6 +122,32 @@ echo "$SGID" | ./bin/mai-arcade verify
 
 ---
 
+## 被其他程序调用（部署）
+
+本项目**零第三方依赖、构建秒级**，所以部署时现场构建即可，不需要把二进制提交进任何仓库（`bin/` 已在 `.gitignore`）。
+
+Python 机器人（XME-bot-qq）侧的约定做法 —— bot 仓库自带构建脚本，它负责取源码、构建、装到 `bin/` 并跑一次 `probe` 自检：
+
+```bash
+# 在 bot 仓库里执行
+./scripts/build_arcade.sh                              # 默认从 ../mai-arcade 取源码
+MAI_ARCADE_REPO=<git-url> ./scripts/build_arcade.sh     # 源码不在本机时自动克隆
+MAI_ARCADE_SRC=<path> ./scripts/build_arcade.sh         # 指定源码目录
+```
+
+调用方只需按上文的契约起子进程（二维码走 stdin、解析 stdout 的 JSON 信封、看退出码）：
+
+```python
+proc = await asyncio.create_subprocess_exec(
+    "bin/mai-arcade", "sync", "--fish-token", token,
+    stdin=asyncio.subprocess.PIPE, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+stdout, _ = await proc.communicate(sgid.encode())
+```
+
+协议更新时（游戏推送新版本），更新源码后重跑一次构建脚本即可（`git pull` + 秒级构建）。
+
+---
+
 ## 命令参考
 
 所有命令的约定：
