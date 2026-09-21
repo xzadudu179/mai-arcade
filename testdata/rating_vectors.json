@@ -1,0 +1,1445 @@
+{
+ "comment": "真实数据向量，取自水鱼公开的 /api/maimaidxprober/player/test_data（无需鉴权的官方测试数据，不含任何凭证）。ra 公式与 b50 求和结构均由本文件断言，等价于 §9「算法已在水鱼侧验证」。",
+ "rating_vectors": [
+  {
+   "ds": 12.7,
+   "ach": 100.5777,
+   "ra": 285,
+   "note": "coeff=22.4"
+  },
+  {
+   "ds": 11.4,
+   "ach": 100.7186,
+   "ra": 256,
+   "note": "coeff=22.4"
+  },
+  {
+   "ds": 12.8,
+   "ach": 100.9761,
+   "ra": 288,
+   "note": "coeff=22.4"
+  },
+  {
+   "ds": 11.3,
+   "ach": 100.0818,
+   "ra": 244,
+   "note": "coeff=21.6"
+  },
+  {
+   "ds": 11.7,
+   "ach": 100.0986,
+   "ra": 252,
+   "note": "coeff=21.6"
+  },
+  {
+   "ds": 12.4,
+   "ach": 100.014,
+   "ra": 267,
+   "note": "coeff=21.6"
+  },
+  {
+   "ds": 12.4,
+   "ach": 99.7107,
+   "ra": 260,
+   "note": "coeff=21.1"
+  },
+  {
+   "ds": 11.7,
+   "ach": 99.5983,
+   "ra": 245,
+   "note": "coeff=21.1"
+  },
+  {
+   "ds": 12.9,
+   "ach": 99.9611,
+   "ra": 272,
+   "note": "coeff=21.1"
+  },
+  {
+   "ds": 11.7,
+   "ach": 99.1064,
+   "ra": 241,
+   "note": "coeff=20.8"
+  },
+  {
+   "ds": 11.7,
+   "ach": 99.1352,
+   "ra": 241,
+   "note": "coeff=20.8"
+  },
+  {
+   "ds": 13.4,
+   "ach": 99.4816,
+   "ra": 277,
+   "note": "coeff=20.8"
+  },
+  {
+   "ds": 13.7,
+   "ach": 98.0715,
+   "ra": 272,
+   "note": "coeff=20.3"
+  },
+  {
+   "ds": 14.0,
+   "ach": 98.7451,
+   "ra": 280,
+   "note": "coeff=20.3"
+  },
+  {
+   "ds": 13.1,
+   "ach": 98.8039,
+   "ra": 262,
+   "note": "coeff=20.3"
+  },
+  {
+   "ds": 14.8,
+   "ach": 97.3295,
+   "ra": 288,
+   "note": "coeff=20.0"
+  },
+  {
+   "ds": 14.2,
+   "ach": 97.9109,
+   "ra": 278,
+   "note": "coeff=20.0"
+  },
+  {
+   "ds": 14.4,
+   "ach": 97.8181,
+   "ra": 281,
+   "note": "coeff=20.0"
+  },
+  {
+   "ds": 11.4,
+   "ach": 96.3912,
+   "ra": 184,
+   "note": "coeff=16.8"
+  },
+  {
+   "ds": 12.7,
+   "ach": 94.2704,
+   "ra": 201,
+   "note": "coeff=16.8"
+  },
+  {
+   "ds": 12.9,
+   "ach": 95.3964,
+   "ra": 206,
+   "note": "coeff=16.8"
+  },
+  {
+   "ds": 10.8,
+   "ach": 90.6718,
+   "ra": 148,
+   "note": "coeff=15.2"
+  },
+  {
+   "ds": 10.7,
+   "ach": 92.329,
+   "ra": 150,
+   "note": "coeff=15.2"
+  },
+  {
+   "ds": 11.3,
+   "ach": 92.4863,
+   "ra": 158,
+   "note": "coeff=15.2"
+  },
+  {
+   "ds": 12.5,
+   "ach": 88.9789,
+   "ra": 151,
+   "note": "coeff=13.6"
+  },
+  {
+   "ds": 11.3,
+   "ach": 85.6362,
+   "ra": 131,
+   "note": "coeff=13.6"
+  },
+  {
+   "ds": 6.0,
+   "ach": 78.7542,
+   "ra": 56,
+   "note": "coeff=12.0"
+  },
+  {
+   "ds": 10.8,
+   "ach": 67.7591,
+   "ra": 70,
+   "note": "coeff=9.6"
+  },
+  {
+   "ds": 9.5,
+   "ach": 55.5906,
+   "ra": 42,
+   "note": "coeff=8.0"
+  },
+  {
+   "ds": 12.2,
+   "ach": 43.2747,
+   "ra": 33,
+   "note": "coeff=6.4"
+  },
+  {
+   "ds": 13.0,
+   "ach": 99.0745,
+   "ra": 0,
+   "note": "utage: 水鱼置 0，本项目跳过"
+  }
+ ],
+ "b50_case": {
+  "expected_rating": 15327,
+  "top_new": 15,
+  "top_old": 35,
+  "records": [
+   {
+    "song_id": 11847,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.5152,
+    "ds": 13.7,
+    "ra": 308,
+    "is_new": true
+   },
+   {
+    "song_id": 11806,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.435,
+    "ds": 13.7,
+    "ra": 297,
+    "is_new": true
+   },
+   {
+    "song_id": 11835,
+    "type": "DX",
+    "level_index": 4,
+    "achievements": 100.524,
+    "ds": 13.2,
+    "ra": 297,
+    "is_new": true
+   },
+   {
+    "song_id": 11855,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 99.247,
+    "ds": 14.2,
+    "ra": 293,
+    "is_new": true
+   },
+   {
+    "song_id": 11842,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 99.3069,
+    "ds": 14.1,
+    "ra": 291,
+    "is_new": true
+   },
+   {
+    "song_id": 11834,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 99.8901,
+    "ds": 13.7,
+    "ra": 288,
+    "is_new": true
+   },
+   {
+    "song_id": 11853,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.2808,
+    "ds": 13.3,
+    "ra": 288,
+    "is_new": true
+   },
+   {
+    "song_id": 11823,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 98.8918,
+    "ds": 14.3,
+    "ra": 287,
+    "is_new": true
+   },
+   {
+    "song_id": 11836,
+    "type": "DX",
+    "level_index": 4,
+    "achievements": 100.4371,
+    "ds": 13.2,
+    "ra": 286,
+    "is_new": true
+   },
+   {
+    "song_id": 11851,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.4909,
+    "ds": 13.2,
+    "ra": 286,
+    "is_new": true
+   },
+   {
+    "song_id": 11850,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.0515,
+    "ds": 13.2,
+    "ra": 285,
+    "is_new": true
+   },
+   {
+    "song_id": 11807,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 99.0104,
+    "ds": 13.8,
+    "ra": 284,
+    "is_new": true
+   },
+   {
+    "song_id": 11838,
+    "type": "DX",
+    "level_index": 4,
+    "achievements": 99.1746,
+    "ds": 13.8,
+    "ra": 284,
+    "is_new": true
+   },
+   {
+    "song_id": 11848,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 98.6625,
+    "ds": 14.1,
+    "ra": 282,
+    "is_new": true
+   },
+   {
+    "song_id": 11840,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 99.6777,
+    "ds": 13.3,
+    "ra": 279,
+    "is_new": true
+   },
+   {
+    "song_id": 11475,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.6091,
+    "ds": 14.3,
+    "ra": 321,
+    "is_new": false
+   },
+   {
+    "song_id": 11479,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.5704,
+    "ds": 14.3,
+    "ra": 321,
+    "is_new": false
+   },
+   {
+    "song_id": 11576,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.6051,
+    "ds": 14.2,
+    "ra": 319,
+    "is_new": false
+   },
+   {
+    "song_id": 11755,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.5266,
+    "ds": 14.2,
+    "ra": 319,
+    "is_new": false
+   },
+   {
+    "song_id": 772,
+    "type": "SD",
+    "level_index": 3,
+    "achievements": 100.5745,
+    "ds": 14.1,
+    "ra": 317,
+    "is_new": false
+   },
+   {
+    "song_id": 11429,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.7287,
+    "ds": 14.1,
+    "ra": 317,
+    "is_new": false
+   },
+   {
+    "song_id": 11472,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.6049,
+    "ds": 14.1,
+    "ra": 317,
+    "is_new": false
+   },
+   {
+    "song_id": 11739,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.5105,
+    "ds": 14.1,
+    "ra": 317,
+    "is_new": false
+   },
+   {
+    "song_id": 492,
+    "type": "SD",
+    "level_index": 3,
+    "achievements": 100.5249,
+    "ds": 14.0,
+    "ra": 315,
+    "is_new": false
+   },
+   {
+    "song_id": 11233,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.5571,
+    "ds": 14.0,
+    "ra": 315,
+    "is_new": false
+   },
+   {
+    "song_id": 11454,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.5366,
+    "ds": 14.0,
+    "ra": 315,
+    "is_new": false
+   },
+   {
+    "song_id": 11015,
+    "type": "DX",
+    "level_index": 4,
+    "achievements": 100.7173,
+    "ds": 14.0,
+    "ra": 315,
+    "is_new": false
+   },
+   {
+    "song_id": 11591,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.6007,
+    "ds": 14.0,
+    "ra": 315,
+    "is_new": false
+   },
+   {
+    "song_id": 11721,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.6635,
+    "ds": 14.0,
+    "ra": 315,
+    "is_new": false
+   },
+   {
+    "song_id": 348,
+    "type": "SD",
+    "level_index": 3,
+    "achievements": 100.1934,
+    "ds": 14.5,
+    "ra": 313,
+    "is_new": false
+   },
+   {
+    "song_id": 11306,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.2267,
+    "ds": 14.5,
+    "ra": 313,
+    "is_new": false
+   },
+   {
+    "song_id": 1235,
+    "type": "SD",
+    "level_index": 3,
+    "achievements": 100.18,
+    "ds": 14.5,
+    "ra": 313,
+    "is_new": false
+   },
+   {
+    "song_id": 446,
+    "type": "SD",
+    "level_index": 3,
+    "achievements": 100.581,
+    "ds": 13.9,
+    "ra": 312,
+    "is_new": false
+   },
+   {
+    "song_id": 592,
+    "type": "SD",
+    "level_index": 3,
+    "achievements": 100.5346,
+    "ds": 13.9,
+    "ra": 312,
+    "is_new": false
+   },
+   {
+    "song_id": 666,
+    "type": "SD",
+    "level_index": 3,
+    "achievements": 100.5275,
+    "ds": 13.9,
+    "ra": 312,
+    "is_new": false
+   },
+   {
+    "song_id": 745,
+    "type": "SD",
+    "level_index": 3,
+    "achievements": 100.5081,
+    "ds": 13.9,
+    "ra": 312,
+    "is_new": false
+   },
+   {
+    "song_id": 798,
+    "type": "SD",
+    "level_index": 3,
+    "achievements": 100.5076,
+    "ds": 13.9,
+    "ra": 312,
+    "is_new": false
+   },
+   {
+    "song_id": 836,
+    "type": "SD",
+    "level_index": 3,
+    "achievements": 100.5746,
+    "ds": 13.9,
+    "ra": 312,
+    "is_new": false
+   },
+   {
+    "song_id": 11096,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.5914,
+    "ds": 13.9,
+    "ra": 312,
+    "is_new": false
+   },
+   {
+    "song_id": 11101,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.5385,
+    "ds": 13.9,
+    "ra": 312,
+    "is_new": false
+   },
+   {
+    "song_id": 11142,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.5669,
+    "ds": 13.9,
+    "ra": 312,
+    "is_new": false
+   },
+   {
+    "song_id": 11283,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.5274,
+    "ds": 13.9,
+    "ra": 312,
+    "is_new": false
+   },
+   {
+    "song_id": 11287,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.5467,
+    "ds": 13.9,
+    "ra": 312,
+    "is_new": false
+   },
+   {
+    "song_id": 11334,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.5184,
+    "ds": 13.9,
+    "ra": 312,
+    "is_new": false
+   },
+   {
+    "song_id": 11343,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.5364,
+    "ds": 13.9,
+    "ra": 312,
+    "is_new": false
+   },
+   {
+    "song_id": 11310,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.4874,
+    "ds": 14.4,
+    "ra": 312,
+    "is_new": false
+   },
+   {
+    "song_id": 11505,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.5717,
+    "ds": 13.9,
+    "ra": 312,
+    "is_new": false
+   },
+   {
+    "song_id": 11528,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.6834,
+    "ds": 13.9,
+    "ra": 312,
+    "is_new": false
+   },
+   {
+    "song_id": 11761,
+    "type": "DX",
+    "level_index": 3,
+    "achievements": 100.8559,
+    "ds": 13.9,
+    "ra": 312,
+    "is_new": false
+   },
+   {
+    "song_id": 773,
+    "type": "SD",
+    "level_index": 3,
+    "achievements": 99.851,
+    "ds": 14.8,
+    "ra": 311,
+    "is_new": false
+   },
+   {
+    "song_id": 9,
+    "type": "SD",
+    "level_index": 3,
+    "achievements": 99.7107,
+    "ds": 12.4,
+    "ra": 260,
+    "is_new": false
+   },
+   {
+    "song_id": 17,
+    "type": "SD",
+    "level_index": 4,
+    "achievements": 100.5777,
+    "ds": 12.7,
+    "ra": 285,
+    "is_new": false
+   },
+   {
+    "song_id": 18,
+    "type": "SD",
+    "level_index": 3,
+    "achievements": 99.5983,
+    "ds": 11.7,
+    "ra": 245,
+    "is_new": false
+   },
+   {
+    "song_id": 22,
+    "type": "SD",
+    "level_index": 4,
+    "achievements": 97.3295,
+    "ds": 14.8,
+    "ra": 288,
+    "is_new": false
+   },
+   {
+    "song_id": 23,
+    "type": "SD",
+    "level_index": 3,
+    "achievements": 96.3912,
+    "ds": 11.4,
+    "ra": 184,
+    "is_new": false
+   },
+   {
+    "song_id": 23,
+    "type": "SD",
+    "level_index": 4,
+    "achievements": 98.0715,
+    "ds": 13.7,
+    "ra": 272,
+    "is_new": false
+   },
+   {
+    "song_id": 24,
+    "type": "SD",
+    "level_index": 3,
+    "achievements": 100.0818,
+    "ds": 11.3,
+    "ra": 244,
+    "is_new": false
+   },
+   {
+    "song_id": 24,
+    "type": "SD",
+    "level_index": 4,
+    "achievements": 98.7451,
+    "ds": 14.0,
+    "ra": 280,
+    "is_new": false
+   },
+   {
+    "song_id": 25,
+    "type": "SD",
+    "level_index": 3,
+    "achievements": 100.7186,
+    "ds": 11.4,
+    "ra": 256,
+    "is_new": false
+   },
+   {
+    "song_id": 27,
+    "type": "SD",
+    "level_index": 3,
+    "achievements": 100.0986,
+    "ds": 11.7,
+    "ra": 252,
+    "is_new": false
+   }
+  ],
+  "songs": [
+   {
+    "id": 9,
+    "title": "Color My World",
+    "type": "SD",
+    "ds": [
+     4.0,
+     7.1,
+     9.8,
+     12.4
+    ],
+    "is_new": false
+   },
+   {
+    "id": 17,
+    "title": "Future",
+    "type": "SD",
+    "ds": [
+     7.0,
+     7.8,
+     9.5,
+     10.7,
+     12.7
+    ],
+    "is_new": false
+   },
+   {
+    "id": 18,
+    "title": "Love You",
+    "type": "SD",
+    "ds": [
+     6.0,
+     6.8,
+     9.6,
+     11.7
+    ],
+    "is_new": false
+   },
+   {
+    "id": 22,
+    "title": "In Chaos",
+    "type": "SD",
+    "ds": [
+     6.0,
+     7.6,
+     9.7,
+     12.5,
+     14.8
+    ],
+    "is_new": false
+   },
+   {
+    "id": 23,
+    "title": "Crush On You",
+    "type": "SD",
+    "ds": [
+     4.0,
+     7.6,
+     9.2,
+     11.4,
+     13.7
+    ],
+    "is_new": false
+   },
+   {
+    "id": 24,
+    "title": "Sun Dance",
+    "type": "SD",
+    "ds": [
+     4.0,
+     7.6,
+     8.9,
+     11.3,
+     14.0
+    ],
+    "is_new": false
+   },
+   {
+    "id": 25,
+    "title": "Sweets×Sweets",
+    "type": "SD",
+    "ds": [
+     6.0,
+     7.4,
+     9.3,
+     11.4
+    ],
+    "is_new": false
+   },
+   {
+    "id": 27,
+    "title": "Love or Lies",
+    "type": "SD",
+    "ds": [
+     5.0,
+     6.8,
+     9.5,
+     11.7
+    ],
+    "is_new": false
+   },
+   {
+    "id": 348,
+    "title": "Axeria",
+    "type": "SD",
+    "ds": [
+     6.0,
+     8.6,
+     12.9,
+     14.5
+    ],
+    "is_new": false
+   },
+   {
+    "id": 446,
+    "title": "GEMINI -M-",
+    "type": "SD",
+    "ds": [
+     7.0,
+     7.8,
+     11.9,
+     13.9
+    ],
+    "is_new": false
+   },
+   {
+    "id": 492,
+    "title": "Jumble Rumble",
+    "type": "SD",
+    "ds": [
+     6.0,
+     8.8,
+     12.9,
+     14.0
+    ],
+    "is_new": false
+   },
+   {
+    "id": 592,
+    "title": "Sakura Fubuki",
+    "type": "SD",
+    "ds": [
+     5.0,
+     8.3,
+     12.2,
+     13.9
+    ],
+    "is_new": false
+   },
+   {
+    "id": 666,
+    "title": "デスパレイト",
+    "type": "SD",
+    "ds": [
+     5.0,
+     8.6,
+     11.9,
+     13.9
+    ],
+    "is_new": false
+   },
+   {
+    "id": 745,
+    "title": "keep hopping",
+    "type": "SD",
+    "ds": [
+     6.0,
+     8.6,
+     12.6,
+     13.9
+    ],
+    "is_new": false
+   },
+   {
+    "id": 772,
+    "title": "FREEDOM DiVE (tpz Overcute Remix)",
+    "type": "SD",
+    "ds": [
+     7.0,
+     9.5,
+     12.8,
+     14.1
+    ],
+    "is_new": false
+   },
+   {
+    "id": 773,
+    "title": "SILENT BLUE",
+    "type": "SD",
+    "ds": [
+     6.0,
+     8.8,
+     12.8,
+     14.8
+    ],
+    "is_new": false
+   },
+   {
+    "id": 798,
+    "title": "セイクリッド　ルイン",
+    "type": "SD",
+    "ds": [
+     7.0,
+     9.6,
+     12.6,
+     13.9
+    ],
+    "is_new": false
+   },
+   {
+    "id": 836,
+    "title": "Good Bye, Mr. Jack",
+    "type": "SD",
+    "ds": [
+     4.0,
+     9.0,
+     12.9,
+     13.9
+    ],
+    "is_new": false
+   },
+   {
+    "id": 1235,
+    "title": "VIIIbit Explorer",
+    "type": "SD",
+    "ds": [
+     6.0,
+     8.2,
+     12.9,
+     14.5
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11015,
+    "title": "一か罰",
+    "type": "DX",
+    "ds": [
+     5.0,
+     7.8,
+     11.4,
+     12.8,
+     14.0
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11096,
+    "title": "モ°ルモ°ル",
+    "type": "DX",
+    "ds": [
+     6.0,
+     8.2,
+     12.2,
+     13.9
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11101,
+    "title": "GRÄNDIR",
+    "type": "DX",
+    "ds": [
+     4.0,
+     7.8,
+     11.0,
+     13.9
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11142,
+    "title": "NULCTRL",
+    "type": "DX",
+    "ds": [
+     3.0,
+     7.8,
+     12.6,
+     13.9
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11233,
+    "title": "Starry Colors",
+    "type": "DX",
+    "ds": [
+     4.0,
+     7.8,
+     11.0,
+     14.0
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11283,
+    "title": "Sound Chimera",
+    "type": "DX",
+    "ds": [
+     4.0,
+     8.2,
+     12.5,
+     13.9
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11287,
+    "title": "Strange Bar",
+    "type": "DX",
+    "ds": [
+     2.0,
+     7.9,
+     10.7,
+     13.9
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11306,
+    "title": "Raven Emperor",
+    "type": "DX",
+    "ds": [
+     5.0,
+     8.5,
+     12.0,
+     14.5
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11310,
+    "title": "Trick tear",
+    "type": "DX",
+    "ds": [
+     5.0,
+     8.8,
+     12.5,
+     14.4
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11334,
+    "title": "Upshift",
+    "type": "DX",
+    "ds": [
+     2.0,
+     8.2,
+     11.0,
+     13.9
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11343,
+    "title": "マツヨイナイトバグ",
+    "type": "DX",
+    "ds": [
+     3.0,
+     7.8,
+     10.7,
+     13.9,
+     14.3
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11429,
+    "title": "Love's Theme of BADASS ～バッド・アス 愛のテーマ～",
+    "type": "DX",
+    "ds": [
+     6.0,
+     8.5,
+     13.0,
+     14.1
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11454,
+    "title": "Tricolor⁂circuS",
+    "type": "DX",
+    "ds": [
+     4.0,
+     7.0,
+     10.7,
+     14.0
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11472,
+    "title": "Don't Fight The Music",
+    "type": "DX",
+    "ds": [
+     5.0,
+     9.0,
+     12.8,
+     14.1
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11475,
+    "title": "SUPER AMBULANCE",
+    "type": "DX",
+    "ds": [
+     6.0,
+     8.7,
+     12.0,
+     14.3
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11479,
+    "title": "Hainuwele",
+    "type": "DX",
+    "ds": [
+     5.0,
+     8.0,
+     12.9,
+     14.3
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11505,
+    "title": "れっつ！みらくる☆はーどこあっ！",
+    "type": "DX",
+    "ds": [
+     5.0,
+     8.2,
+     11.8,
+     13.9
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11528,
+    "title": "Comet Panto Men!",
+    "type": "DX",
+    "ds": [
+     5.0,
+     7.8,
+     12.0,
+     13.9
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11576,
+    "title": "Cthugha",
+    "type": "DX",
+    "ds": [
+     6.0,
+     8.8,
+     12.5,
+     14.2
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11591,
+    "title": "ULTRA SYNERGY MATRIX",
+    "type": "DX",
+    "ds": [
+     5.0,
+     7.4,
+     12.0,
+     14.0
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11721,
+    "title": "INFiNiTE ENERZY -Overdoze-",
+    "type": "DX",
+    "ds": [
+     5.0,
+     8.0,
+     13.0,
+     14.0
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11739,
+    "title": "184億回のマルチトニック",
+    "type": "DX",
+    "ds": [
+     5.0,
+     8.2,
+     11.7,
+     14.1
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11755,
+    "title": "美夜月鏡",
+    "type": "DX",
+    "ds": [
+     5.0,
+     7.9,
+     12.2,
+     14.2
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11761,
+    "title": "病み垢ステロイド",
+    "type": "DX",
+    "ds": [
+     5.0,
+     7.8,
+     11.0,
+     13.9
+    ],
+    "is_new": false
+   },
+   {
+    "id": 11806,
+    "title": "Fraq",
+    "type": "DX",
+    "ds": [
+     5.0,
+     8.5,
+     12.2,
+     13.7
+    ],
+    "is_new": true
+   },
+   {
+    "id": 11807,
+    "title": "ウタヒメナイトストーム",
+    "type": "DX",
+    "ds": [
+     4.0,
+     7.0,
+     11.5,
+     13.8
+    ],
+    "is_new": true
+   },
+   {
+    "id": 11823,
+    "title": "Zitronectar",
+    "type": "DX",
+    "ds": [
+     5.0,
+     8.7,
+     12.0,
+     14.3
+    ],
+    "is_new": true
+   },
+   {
+    "id": 11834,
+    "title": "月光",
+    "type": "DX",
+    "ds": [
+     4.0,
+     8.0,
+     11.2,
+     13.7
+    ],
+    "is_new": true
+   },
+   {
+    "id": 11835,
+    "title": "はいよろこんで",
+    "type": "DX",
+    "ds": [
+     3.0,
+     6.5,
+     9.8,
+     11.6,
+     13.2
+    ],
+    "is_new": true
+   },
+   {
+    "id": 11836,
+    "title": "ビビデバ",
+    "type": "DX",
+    "ds": [
+     2.0,
+     6.4,
+     9.7,
+     11.8,
+     13.2
+    ],
+    "is_new": true
+   },
+   {
+    "id": 11838,
+    "title": "メズマライザー",
+    "type": "DX",
+    "ds": [
+     3.0,
+     7.2,
+     10.5,
+     11.9,
+     13.8
+    ],
+    "is_new": true
+   },
+   {
+    "id": 11840,
+    "title": "のだ",
+    "type": "DX",
+    "ds": [
+     3.0,
+     6.2,
+     9.8,
+     13.3
+    ],
+    "is_new": true
+   },
+   {
+    "id": 11842,
+    "title": "Synthesis.",
+    "type": "DX",
+    "ds": [
+     5.0,
+     8.8,
+     12.6,
+     14.1
+    ],
+    "is_new": true
+   },
+   {
+    "id": 11847,
+    "title": "M@GICAL☆CURE! LOVE ♥ SHOT!",
+    "type": "DX",
+    "ds": [
+     4.0,
+     7.8,
+     11.2,
+     13.7
+    ],
+    "is_new": true
+   },
+   {
+    "id": 11848,
+    "title": "Overjoy ★ OVERDOSE!!",
+    "type": "DX",
+    "ds": [
+     4.0,
+     7.8,
+     11.0,
+     14.1
+    ],
+    "is_new": true
+   },
+   {
+    "id": 11850,
+    "title": "あいたい星人",
+    "type": "DX",
+    "ds": [
+     3.0,
+     6.2,
+     9.7,
+     13.2
+    ],
+    "is_new": true
+   },
+   {
+    "id": 11851,
+    "title": "ハオ",
+    "type": "DX",
+    "ds": [
+     3.0,
+     7.0,
+     10.0,
+     13.2
+    ],
+    "is_new": true
+   },
+   {
+    "id": 11853,
+    "title": "Help me, ERINNNNNN!!",
+    "type": "DX",
+    "ds": [
+     4.0,
+     7.8,
+     10.7,
+     13.3
+    ],
+    "is_new": true
+   },
+   {
+    "id": 11855,
+    "title": "Destined Marionette",
+    "type": "DX",
+    "ds": [
+     4.0,
+     8.2,
+     12.5,
+     14.2
+    ],
+    "is_new": true
+   }
+  ]
+ }
+}
