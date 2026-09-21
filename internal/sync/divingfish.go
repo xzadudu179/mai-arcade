@@ -124,7 +124,7 @@ func (d *DivingFish) Upload(ctx context.Context, scores []model.Score, credentia
 			"服务器条数", len(remote),
 			"待上传条数", len(merged.Records),
 			"保留标记数", merged.PreservedMarks,
-			"宴谱跳过", merged.SkipUtage,
+			"其中宴谱", merged.Utage,
 			"未知曲目跳过", merged.SkippedUnknown,
 			"越界难度跳过", merged.SkippedInvalidLevel,
 			"服务器独有", merged.RemoteOnly)

@@ -221,7 +221,7 @@ md5("GetUserDataApi"    + "MaimaiChnB44df8yT") == 3af1e5b298bb5b7379c94934b2e038
 
 | 字段 | 类型 | 说明 |
 | --- | --- | --- |
-| `musicId` | int | `<10000` SD 谱；`>=10000` DX 谱；`>=100000` 宴谱（同步跳过） |
+| `musicId` | int | `<10000` SD 谱；`>=10000` DX 谱；`>=100000` 宴谱（同步时难度折算为 0） |
 | `level` | int | 0=Basic, 1=Advanced, 2=Expert, 3=Master, 4=Re:Master, 5=宴 |
 | `playCount` | int | 游玩次数 |
 | `achievement` | int | **达成率 ×10000 的整数**（`1010000` = 101.0000%） |
@@ -351,7 +351,7 @@ md5("GetUserDataApi"    + "MaimaiChnB44df8yT") == 3af1e5b298bb5b7379c94934b2e038
 | F4 | 全量拉成绩 | `GetUserMusicApi` 分页；过滤 `playCount<=0` |
 | F5 | 正常登出 | 相同 `dateTime`；**异常路径也要登出**（`defer`） |
 | F6 | 转水鱼格式 | `achievement/10000`、`level_index`、`fc`/`fs` 字符串、`type`、`title` |
-| F7 | 合并上传 | 先读现状 → 合并（机台缺的 FC/FS 保留原值）→ 上传；宴谱跳过 |
+| F7 | 合并上传 | 先读现状 → 合并（机台缺的 FC/FS 保留原值）→ 上传；宴谱一并上传，难度折算为 `level_index=0` |
 | F8 | 连通性自检 | 区分四类故障（§5.6） |
 
 ### 4.2 P1
@@ -615,8 +615,8 @@ func packBody(payload any, v Version) ([]byte, error) { ... }
 | `protocol.NewSGID` | 纯文本 / req 链接 / img 链接 / 大小写 / 前后空格；**非法输入必须被拒绝**（长度≠84、前缀错、`[20:]` 含非十六进制） |
 | `protocol` 新鲜度 | `YYMMDDHHMMSS` 解析；超 10 分钟判过期；未来时间容错 |
 | `protocol.Versions` | 参数表完整性（每版本 4 字段齐全、Key 长度 32、IV 长度 16） |
-| 成绩转换 | `achievement` ×10000 → 百分比；`comboStatus`/`syncStatus` → 字符串；宴谱过滤 |
-| `sync` 合并 | **构造「远端有 fc / 机台无 fc」断言 fc 被保留**；不同曲不串行；`level_index` 越界条目跳过 |
+| 成绩转换 | `achievement` ×10000 → 百分比；`comboStatus`/`syncStatus` → 字符串；宴谱难度折算为 0（`Score.ChartLevel`），b50 侧排除宴谱 |
+| `sync` 合并 | **构造「远端有 fc / 机台无 fc」断言 fc 被保留**；不同曲不串行；`level_index` 越界条目跳过；宴谱按折算后的难度上传且合并键与远端的 `level_index=0` 对齐 |
 | b50（若实现） | 新 15 + 旧 35；`rating` = ra 之和；不足时截断行为 |
 
 要求：**表驱动**（`tests := []struct{ name string; ... }`），用例名写清场景；并发相关代码用 `-race` 跑。

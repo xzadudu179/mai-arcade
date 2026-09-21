@@ -15,7 +15,25 @@ func testIndex() *chart.Index {
 		// 同名不同曲：水鱼靠 title 区分，写错歌名就会匹配到另一首。
 		{ID: 1003, Title: "Link(CoF)", Type: "SD", DS: []float64{2, 6, 9, 13}},
 		{ID: 1004, Title: "Plain Song", Type: "SD", DS: []float64{1, 5, 8, 11}},
+		// 宴谱：查分器里只有一个难度档，所以 ds 也只有一项。
+		{ID: 100508, Title: "[協]恋愛裁判", Type: "DX", DS: []float64{13.0}},
 	})
+}
+
+// TestCountMappedUtage 断言只数映射得到的宴谱，且不把普通成绩算进去。
+func TestCountMappedUtage(t *testing.T) {
+	scores := []model.Score{
+		{MusicID: 100508, Level: model.LevelUtage, Achievement: 99.0},
+		{MusicID: 1001, Level: model.LevelMaster, Achievement: 99.0},
+		{MusicID: 100999, Level: model.LevelUtage, Achievement: 99.0}, // 索引里没有这首
+	}
+
+	if got := CountMappedUtage(scores, testIndex()); got != 1 {
+		t.Errorf("能映射的宴谱数 = %d, 期望 1", got)
+	}
+	if got := CountMappedUtage(scores, nil); got != 0 {
+		t.Errorf("曲目索引为 nil 时 = %d, 期望 0", got)
+	}
 }
 
 // TestMergePreservesRemoteMarks 断言机台拿不到 FC/FS 时保留服务器原值。
@@ -129,14 +147,14 @@ func TestMergeDoesNotCrossCharts(t *testing.T) {
 	}
 }
 
-// TestMergeSkipsUnmappableScores 断言宴谱、越界难度与未知曲目都被跳过。
+// TestMergeSkipsUnmappableScores 断言越界难度与未知曲目被跳过。
 func TestMergeSkipsUnmappableScores(t *testing.T) {
 	scores := []model.Score{
 		{MusicID: 1001, Level: model.LevelMaster, Achievement: 100.5, PlayCount: 1},
-		{MusicID: 100508, Level: model.LevelMaster, Achievement: 100.5, PlayCount: 1},
 		{MusicID: 9999, Level: model.LevelMaster, Achievement: 100.5, PlayCount: 1},
 		{MusicID: 1001, Level: model.LevelIndex(9), Achievement: 100.5, PlayCount: 1},
-		{MusicID: 1001, Level: model.LevelIndex(5), Achievement: 100.5, PlayCount: 1},
+		// 宴谱档的难度套在普通曲目上：曲目不是宴谱，就没有折算的理由，只能跳过。
+		{MusicID: 1001, Level: model.LevelUtage, Achievement: 100.5, PlayCount: 1},
 	}
 
 	got := merge(nil, scores, testIndex())
@@ -144,14 +162,70 @@ func TestMergeSkipsUnmappableScores(t *testing.T) {
 	if len(got.Records) != 1 {
 		t.Fatalf("待上传条数 = %d, 期望 1", len(got.Records))
 	}
-	if got.SkipUtage != 1 {
-		t.Errorf("宴谱跳过数 = %d, 期望 1", got.SkipUtage)
+	if got.Utage != 0 {
+		t.Errorf("宴谱数 = %d, 期望 0", got.Utage)
 	}
 	if got.SkippedUnknown != 1 {
 		t.Errorf("未知曲目跳过数 = %d, 期望 1", got.SkippedUnknown)
 	}
 	if got.SkippedInvalidLevel != 2 {
-		t.Errorf("越界难度跳过数 = %d, 期望 2（level=9 与宴谱档 level=5）", got.SkippedInvalidLevel)
+		t.Errorf("越界难度跳过数 = %d, 期望 2（level=9 与套在普通曲目上的 level=5）", got.SkippedInvalidLevel)
+	}
+}
+
+// TestMergeSyncsUtageAsLevelZero 断言宴谱按折算后的难度 0 上传。
+//
+// 机台把宴谱报成 level=5，而查分器只认 0..4 且每首宴谱只有一个难度档：
+// 不折算就会被服务端当作不存在的难度丢掉，折算成别的值则会写到错的难度上。
+func TestMergeSyncsUtageAsLevelZero(t *testing.T) {
+	scores := []model.Score{
+		{MusicID: 100508, Level: model.LevelUtage, Achievement: 99.5, DXScore: 2100,
+			Combo: model.ComboFC, Sync: model.SyncFS},
+	}
+
+	got := merge(nil, scores, testIndex())
+
+	if len(got.Records) != 1 {
+		t.Fatalf("待上传条数 = %d, 期望 1", len(got.Records))
+	}
+	record := got.Records[0]
+	if record.LevelIndex != int(model.UtageLevelIndex) {
+		t.Errorf("levelIndex = %d, 期望折算出 %d", record.LevelIndex, model.UtageLevelIndex)
+	}
+	if record.Title != "[協]恋愛裁判" || record.Type != "DX" {
+		t.Errorf("title/type = %q/%q, 期望按 musicId 解析出宴谱曲名", record.Title, record.Type)
+	}
+	if record.FC != "fc" || record.FS != "fs" {
+		t.Errorf("fc/fs = %q/%q, 期望宴谱的竞速标识照样带上", record.FC, record.FS)
+	}
+	if got.Utage != 1 {
+		t.Errorf("宴谱数 = %d, 期望 1", got.Utage)
+	}
+}
+
+// TestMergeUtageKeyAlignsWithRemote 断言宴谱的合并键与服务器上的 level_index=0 对得上。
+//
+// 折算错了不会立刻报错，只会静默多出一条记录：键对不上时服务器原有的 fc/fs 就保不住，
+// 这正是合并最不能出的错。
+func TestMergeUtageKeyAlignsWithRemote(t *testing.T) {
+	remote := []remoteRecord{
+		{Title: "[協]恋愛裁判", Type: "DX", LevelIndex: 0, Achievements: 99.9, FC: "ap", FS: "sync"},
+	}
+	scores := []model.Score{
+		{MusicID: 100508, Level: model.LevelUtage, Achievement: 100.2, DXScore: 2000},
+	}
+
+	got := merge(remote, scores, testIndex())
+
+	if len(got.Records) != 1 {
+		t.Fatalf("待上传条数 = %d, 期望 1", len(got.Records))
+	}
+	record := got.Records[0]
+	if record.FC != "ap" || record.FS != "sync" {
+		t.Errorf("fc/fs = %q/%q, 期望保留服务器原值", record.FC, record.FS)
+	}
+	if got.RemoteOnly != 0 {
+		t.Errorf("服务器独有数 = %d, 期望 0（键对齐后这条宴谱应被认作已上报）", got.RemoteOnly)
 	}
 }
 

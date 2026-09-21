@@ -62,8 +62,8 @@ type mergeResult struct {
 	// SkippedInvalidLevel 是 level_index 越界、被跳过的条数。
 	SkippedInvalidLevel int
 
-	// SkipUtage 是宴谱条数，按规则不计入同步。
-	SkipUtage int
+	// Utage 是纳入同步的宴谱条数。宴谱不参与 b50，但成绩本身照样上传。
+	Utage int
 
 	// PreservedMarks 是被保留下来的 FC/FS 标记条数（机台没给、服务器原有）。
 	PreservedMarks int
@@ -72,10 +72,35 @@ type mergeResult struct {
 	RemoteOnly int
 }
 
+// mappable 报告 musicId 能否映射到一条可上传的曲目。
+func mappable(songs chart.Source, musicID int) bool {
+	song, ok := songs.Song(musicID)
+	return ok && song.Usable()
+}
+
+// CountMappedUtage 统计其中能映射到曲目的宴谱条数。
+//
+// 宴谱会被上传但不计入 b50，调用方（命令层的成功文案）需要这个数来告诉用户
+// 宴谱到底有没有一起同步上去。
+func CountMappedUtage(scores []model.Score, songs chart.Source) int {
+	if songs == nil {
+		return 0
+	}
+	count := 0
+	for _, score := range scores {
+		if score.IsUtage() && mappable(songs, score.MusicID) {
+			count++
+		}
+	}
+	return count
+}
+
 // merge 把机台成绩与服务器现状合并成待上传列表。
 //
 // 合并的核心约束：fc/fs 传空会清空服务器已有标记，而机台数据在部分情况下拿不到这两项，
 // 因此机台缺的标记必须保留服务器原值；其余字段取两边的较大值，保证任何情况下都不会让已有成绩回退。
+//
+// 难度一律经 Score.ChartLevel 折算：宴谱在机台是 5、在查分器是 0，不折算就会被当成不存在的难度丢掉。
 func merge(remote []remoteRecord, scores []model.Score, songs chart.Source) mergeResult {
 	type key struct {
 		title string
@@ -93,33 +118,34 @@ func merge(remote []remoteRecord, scores []model.Score, songs chart.Source) merg
 	ordered := make([]key, 0, len(scores))
 
 	for _, score := range scores {
-		if score.IsUtage() {
-			result.SkipUtage++
-			continue
-		}
-		if !score.Level.Valid() {
+		level := score.ChartLevel()
+		if !level.Valid() {
 			result.SkippedInvalidLevel++
 			continue
 		}
 		song, ok := songs.Song(score.MusicID)
-		if !ok || song.Title == "" || song.Type == "" {
+		if !ok || !song.Usable() {
 			result.SkippedUnknown++
 			continue
 		}
 
-		k := key{song.Title, song.Type, score.Level}
+		k := key{song.Title, song.Type, level}
 		if _, dup := seen[k]; dup {
 			continue
 		}
 		seen[k] = struct{}{}
 		ordered = append(ordered, k)
 
+		if score.IsUtage() {
+			result.Utage++
+		}
+
 		record := uploadRecord{
 			Achievements: roundAchievement(score.Achievement),
 			DXScore:      score.DXScore,
 			FC:           score.Combo.DivingFish(),
 			FS:           score.Sync.DivingFish(),
-			LevelIndex:   int(score.Level),
+			LevelIndex:   int(level),
 			Title:        song.Title,
 			Type:         song.Type,
 		}

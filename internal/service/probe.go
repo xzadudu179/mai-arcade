@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/xzadudu179/maimai-arcade/internal/chart"
 	"github.com/xzadudu179/maimai-arcade/internal/model"
 	"github.com/xzadudu179/maimai-arcade/internal/protocol"
 )
@@ -230,10 +231,10 @@ func titleVerdictFromAttempts(configured string, attempts []versionAttempt) Targ
 	}
 	if allEmpty {
 		v.Class = ClassBlocked
-		v.Hint = "所有协议版本都拿不到响应体。三种成因按可能性排序：" +
-			"① 短时间内请求过多触发了封禁（等十几分钟再试，别继续打）；" +
-			"② 出口 IP 被阻断（换家宽 IP / 重启光猫 / 等 48–72 小时）；" +
-			"③ 协议参数已被再次更换（确认是否有更新版本）"
+		v.Hint = "无法拿到响应体。可能有以下几个原因：" +
+			"1. 短时间内请求过多触发了封禁（等十几分钟再试，别继续打）；" +
+			"2. 出口 IP 被阻断（换家宽 IP / 重启光猫 / 等 48–72 小时）；" +
+			"3. 协议参数已被再次更换（确认是否有更新版本）"
 		return v
 	}
 
@@ -400,14 +401,43 @@ type VerifyResult struct {
 	// LevelCounts 按难度统计条数，键是难度名。
 	LevelCounts map[string]int
 
-	// UtageCount 是宴谱条数。
+	// UtageCount 是宴谱条数。宴谱会同步到查分器，但不计入 b50。
 	UtageCount int
+
+	// Utages 是宴谱明细：机台 musicId 经曲目索引解析出的曲名，以及折算后的难度。
+	//
+	// 这是不写入任何数据就能确认宴谱映射结果的地方：title 为空表示索引里没有这个 musicId，
+	// 同步时该条会被当作未知曲目跳过。超过 sampleLimit 条时截断。
+	Utages []UtageSample
+
+	// UtageUnmapped 是曲目索引里查不到的宴谱条数。
+	UtageUnmapped int
 
 	// Samples 是前若干条成绩的字段结构样例（脱敏，仅数值与枚举）。
 	Samples []SampleScore
 
 	// Warnings 透传会话期的非致命问题。
 	Warnings []string
+}
+
+// UtageSample 是一条宴谱成绩的映射结果。
+type UtageSample struct {
+	MusicID int `json:"musicId"`
+
+	// Title / Type 是曲目索引给出的水鱼侧曲名与类型；索引里没有则为空。
+	Title string `json:"title,omitempty"`
+	Type  string `json:"type,omitempty"`
+
+	// LevelIndex 是折算后上传给查分器的难度索引（宴谱恒为 0）。
+	LevelIndex int `json:"levelIndex"`
+
+	// RawLevel 是机台原始难度值（宴谱为 5）。
+	RawLevel int `json:"rawLevel"`
+
+	Achievement float64 `json:"achievement"`
+	DXScore     int     `json:"dxScore"`
+	Combo       string  `json:"combo"`
+	Sync        string  `json:"sync"`
 }
 
 // SampleScore 是一条用于展示字段结构的成绩样例。
@@ -423,6 +453,11 @@ type SampleScore struct {
 
 // sampleLimit 是 verify 展示的样例条数。
 const sampleLimit = 5
+
+// utageSampleLimit 是 verify 展示的宴谱明细条数上限。
+//
+// 宴谱通常只有十几条，但仍给它设上限：verify 的输出是给人看诊断结论的，不该被长列表淹掉。
+const utageSampleLimit = 20
 
 // comboName / syncName 把枚举转成可读名，用于统计与展示。
 func comboName(c model.ComboStatus) string {
@@ -492,6 +527,8 @@ func (s *Service) Verify(ctx context.Context, sgid protocol.SGID) (VerifyResult,
 		}
 	}
 
+	s.attachUtageDetail(ctx, session.Scores, &result)
+
 	// 样例按 musicId 排序，保证同一份数据每次输出一致。
 	ordered := append([]model.Score(nil), session.Scores...)
 	sort.Slice(ordered, func(i, j int) bool { return ordered[i].MusicID < ordered[j].MusicID })
@@ -510,4 +547,69 @@ func (s *Service) Verify(ctx context.Context, sgid protocol.SGID) (VerifyResult,
 		})
 	}
 	return result, nil
+}
+
+// attachUtageDetail 填充宴谱明细。
+//
+// 曲目索引拉不到不算 verify 失败，但那种情况下连 musicId 明细也不给：title 全空
+// 看上去跟"映射不上"一样，反而会让人以为宴谱同步不了。
+func (s *Service) attachUtageDetail(ctx context.Context, scores []model.Score, result *VerifyResult) {
+	if !hasUtage(scores) {
+		return
+	}
+	index, err := s.ChartIndex(ctx)
+	if err != nil {
+		result.Warnings = append(result.Warnings, "曲目索引不可用，宴谱明细只有 musicId 没有曲名")
+		return
+	}
+	result.Utages, result.UtageUnmapped = utageDetail(scores, index, utageSampleLimit)
+}
+
+func hasUtage(scores []model.Score) bool {
+	for _, score := range scores {
+		if score.IsUtage() {
+			return true
+		}
+	}
+	return false
+}
+
+// utageDetail 把宴谱成绩折算成明细，并数出索引里查不到的条数（纯函数）。
+//
+// 按 musicId 排序、超过 limit 条截断；未命中的计数不受截断影响。
+func utageDetail(scores []model.Score, songs chart.Source, limit int) ([]UtageSample, int) {
+	var utages []model.Score
+	for _, score := range scores {
+		if score.IsUtage() {
+			utages = append(utages, score)
+		}
+	}
+	if len(utages) == 0 {
+		return nil, 0
+	}
+
+	sort.Slice(utages, func(i, j int) bool { return utages[i].MusicID < utages[j].MusicID })
+	samples := make([]UtageSample, 0, len(utages))
+	unmapped := 0
+	for _, score := range utages {
+		sample := UtageSample{
+			MusicID:     score.MusicID,
+			LevelIndex:  int(score.ChartLevel()),
+			RawLevel:    int(score.Level),
+			Achievement: score.Achievement,
+			DXScore:     score.DXScore,
+			Combo:       comboName(score.Combo),
+			Sync:        syncName(score.Sync),
+		}
+		if song, ok := songs.Song(score.MusicID); ok {
+			sample.Title, sample.Type = song.Title, song.Type
+		} else {
+			unmapped++
+		}
+		samples = append(samples, sample)
+	}
+	if limit > 0 && len(samples) > limit {
+		samples = samples[:limit]
+	}
+	return samples, unmapped
 }

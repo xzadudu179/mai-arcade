@@ -14,6 +14,7 @@ type syncOutput struct {
 	UserID     int    `json:"userId"`
 	Site       string `json:"site"`
 	ScoreCount int    `json:"scoreCount"`
+	UtageCount int    `json:"utageCount"`
 	Warnings   any    `json:"warnings,omitempty"`
 	Note       string `json:"note"`
 }
@@ -62,8 +63,9 @@ func runSync(ctx context.Context, e *environment, args []string) error {
 		UserID:     result.UserID,
 		Site:       result.Site,
 		ScoreCount: result.ScoreCount,
+		UtageCount: result.UtageCount,
 		Warnings:   warningsOrNil(result.Warnings),
-		Note:       "已合并服务器现状后上传，机台缺失的 FC/FS 保留原值；宴谱不参与同步",
+		Note:       "已合并服务器现状后上传，机台缺失的 FC/FS 保留原值；宴谱一并上传但不计入 b50",
 	})
 }
 

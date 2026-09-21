@@ -368,6 +368,12 @@ type SyncResult struct {
 	// ScoreCount 是机台上报的成绩条数。
 	ScoreCount int `json:"scoreCount"`
 
+	// UtageCount 是成绩里能映射到曲目的宴谱条数。
+	//
+	// 宴谱不参与定数、不计入 b50，但会同其他成绩一起上传；这个数只用于让调用方
+	// 确认宴谱确实跟着上去了。映射不上的宴谱仍会被合并步骤跳过，所以它数的是「能上传的」。
+	UtageCount int `json:"utageCount"`
+
 	// Site 是实际使用的查分器。
 	Site string `json:"site"`
 
@@ -424,6 +430,7 @@ func (s *Service) Sync(ctx context.Context, req SyncRequest) (SyncResult, error)
 	return SyncResult{
 		UserID:     userID,
 		ScoreCount: len(scores),
+		UtageCount: sitesync.CountMappedUtage(scores, index),
 		Site:       syncer.Name(),
 		Warnings:   warnings,
 	}, nil

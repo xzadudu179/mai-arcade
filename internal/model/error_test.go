@@ -45,7 +45,7 @@ func TestLevelIndexValidAndString(t *testing.T) {
 		{LevelExpert, true, "Expert"},
 		{LevelMaster, true, "Master"},
 		{LevelReMaster, true, "Re:Master"},
-		{5, false, "Unknown"},
+		{LevelUtage, false, "Utage"},
 		{200, false, "Unknown"},
 	}
 
@@ -56,6 +56,34 @@ func TestLevelIndexValidAndString(t *testing.T) {
 			}
 			if got := tc.level.String(); got != tc.wantName {
 				t.Errorf("LevelIndex(%d).String() = %q, 期望 %q", tc.level, got, tc.wantName)
+			}
+		})
+	}
+}
+
+// TestScoreChartLevel 断言上传前把机台难度折算成查分器难度索引。
+//
+// 宴谱在机台是 5、在查分器是 0；普通谱面原样透传，包括本该越界的取值——
+// 折算只负责宴谱，越界值要靠 Valid 在调用处拦下，不能在这里被悄悄改成合法值。
+func TestScoreChartLevel(t *testing.T) {
+	tests := []struct {
+		name    string
+		musicID int
+		level   LevelIndex
+		want    LevelIndex
+	}{
+		{"普通谱面原样透传", 10030, LevelMaster, LevelMaster},
+		{"普通谱面越界值不修正", 10030, LevelUtage, LevelUtage},
+		{"宴谱折算到 0", 100508, LevelUtage, UtageLevelIndex},
+		{"宴谱即使报成正常难度也折算到 0", 100508, LevelMaster, UtageLevelIndex},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			score := Score{MusicID: tc.musicID, Level: tc.level}
+			if got := score.ChartLevel(); got != tc.want {
+				t.Errorf("musicId=%d level=%d 的 ChartLevel() = %d, 期望 %d",
+					tc.musicID, tc.level, got, tc.want)
 			}
 		})
 	}

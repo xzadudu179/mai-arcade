@@ -62,6 +62,12 @@ func (i *Index) Song(musicID int) (Song, bool) {
 	return s, ok
 }
 
+// Usable 报告这条曲目信息是否足以用于上传成绩。
+//
+// 查分器靠歌名匹配曲目，缺曲名或缺类型都写不出去；索引里个别条目只有 id，
+// 所有「能不能映射」的判断都应当以它为准。
+func (s Song) Usable() bool { return s.Title != "" && s.Type != "" }
+
 // Len 返回索引中的曲目数。
 func (i *Index) Len() int {
 	if i == nil {
